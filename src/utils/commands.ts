@@ -12,11 +12,12 @@ const hostname = window.location.hostname;
 export const commands: Record<string, (args: string[]) => Promise<string> | string> = {
   help: () => {
     const categories = {
-      System: ["help", "clear", "date", "exit"],
+      Information: ["whoareyou"],
+      System: ["help", "clear", "date", "exit", "echo"],
       Productivity: ["todo", "weather"],
       Customization: ["theme", "banner"],
       Network: ["curl", "hostname", "whoami"],
-      Contact: ["email", "repo", "donate"],
+      Contact: ["email", "contact"],
       Fun: ["play", "neofetch"],
     };
 
@@ -30,9 +31,26 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
 
     output +=
       'Type "[command] help" or "[command]" without args for more info.';
+    output += "\nNot all commands are listed, some are hidden for you to discover!";
 
     return output;
   },
+  whoareyou: () => `
+Heya, I'm Lost, the developer behind this silly little thing, i built it as a personal portfolio site and got a bit carried away adding features and customizations.
+
+I'm have a BSc in Applied Cyber Security and am a hobbyist developer. I love tinkering with code, exploring new technologies, and creating fun projects like this one.
+I like to mess a lot with Linux, gaming, and music. I'm always open to connecting with fellow tech enthusiasts, so feel free to reach out!
+Most of my code on my GitHub is my messy and experimental playground, but I can do better when needed :)
+
+If you want to check out more or contact me check out the 'contact' command!
+  `,
+  contact: () => `
+There are several ways to reach out to me:
+- Email: ${packageJson.author.email}
+- GitHub: https://github.com/lostanddead
+- Twitter: https://twitter.com/lostanddead9001
+- Discord: @lostanddead  
+  `,
   hostname: () => hostname,
   whoami: async () => {
     // Play the who_are_you sound effect
@@ -44,10 +62,7 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
       // Ignore audio errors silently
     }
     
-    // Wait for the sound to play before showing the text
-    await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5 second delay
-    
-    return "idk, you tell me";
+    return "who are you?";
   },
   date: () => new Date().toLocaleString(),
   vi: () => `why use vi? try 'emacs'`,
@@ -55,9 +70,16 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
   emacs: () => `why use emacs? try 'vim'`,
   echo: (args: string[]) => args.join(" "),
   sudo: (args: string[]) => {
-    window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    // Play the rick_roll sound effect
+    try {
+      const audio = new Audio('/sounds/turrets/rick_roll.wav');
+      audio.volume = 0.3;
+      audio.play().catch(() => {}); // Ignore audio errors
+    } catch (error) {
+      // Ignore audio errors silently
+    }
 
-    return `Permission denied: unable to run the command '${args[0]}' as root.`;
+    return `Permission denied: unable to run the command '${args[0]}' as root. Enjoy the music!`;
   },
   theme: (args: string[]) => {
     const usage = `Usage: theme [args].
@@ -132,7 +154,7 @@ Available themes starting with '${selectedTheme.charAt(0)}': ${themes.filter(the
   repo: () => {
     window.open(packageJson.repository.url, "_blank");
 
-    return "Opening repository...";
+    return "Opening repository...\nThis project was originally based on https://github.com/m4tt72/terminal";
   },
   clear: () => {
     history.set([]);
@@ -189,7 +211,7 @@ Available themes starting with '${selectedTheme.charAt(0)}': ${themes.filter(the
  ███████████░░██████  ██████   ░░█████  ██ ██████████  ░░██████ ░░████████░░████████
 ░░░░░░░░░░░  ░░░░░░  ░░░░░░     ░░░░░  ░░ ░░░░░░░░░░    ░░░░░░   ░░░░░░░░  ░░░░░░░░  v${packageJson.version}
 
-Type 'help' to see list of available commands.
+Type 'help' to see list of available commands. (Some commands are hidden for you to discover!)
 `,
   todo: (args: string[]) => {
     const usage = `Usage: todo [command] [args]
