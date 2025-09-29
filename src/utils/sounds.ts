@@ -48,7 +48,8 @@ export function loadSounds(): SoundGroup {
   
   // Use Vite's import.meta.glob to get all audio files
   const audioFiles = import.meta.glob('/public/sounds/**/*.{mp3,wav,ogg,m4a}', { 
-    as: 'url',
+    query: '?url',
+    import: 'default',
     eager: true 
   });
 
@@ -60,13 +61,16 @@ export function loadSounds(): SoundGroup {
     const baseMatch = fileName.match(/^(.+?)(?:-\d+)?$/);
     const baseName = baseMatch ? baseMatch[1].toLowerCase() : fileName.toLowerCase();
     
-    // Convert file path to public URL: /public/sounds/... -> /sounds/...
-    const publicUrl = filePath.replace('/public', '');
+    // Fix the URL by removing /public from the start
+    let fixedUrl = url as string;
+    if (fixedUrl.startsWith('/public/')) {
+      fixedUrl = fixedUrl.replace('/public/', '/');
+    }
     
     if (!sounds[baseName]) {
       sounds[baseName] = [];
     }
-    sounds[baseName].push(publicUrl);
+    sounds[baseName].push(fixedUrl);
   }
 
   soundsCache = sounds;

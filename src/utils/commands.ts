@@ -34,7 +34,21 @@ export const commands: Record<string, (args: string[]) => Promise<string> | stri
     return output;
   },
   hostname: () => hostname,
-  whoami: () => "idk, you tell me",
+  whoami: async () => {
+    // Play the who_are_you sound effect
+    try {
+      const audio = new Audio('/sounds/turrets/who_are_you.wav');
+      audio.volume = 0.3;
+      audio.play().catch(() => {}); // Ignore audio errors
+    } catch (error) {
+      // Ignore audio errors silently
+    }
+    
+    // Wait for the sound to play before showing the text
+    await new Promise(resolve => setTimeout(resolve, 1500)); // 1.5 second delay
+    
+    return "idk, you tell me";
+  },
   date: () => new Date().toLocaleString(),
   vi: () => `why use vi? try 'emacs'`,
   vim: () => `why use vim? try 'emacs'`,
