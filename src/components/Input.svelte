@@ -51,6 +51,7 @@
       }
 
       command = '';
+      historyIndex = -1; // Reset history navigation index
     } else if (event.key === 'ArrowUp') {
       if (historyIndex < $history.length - 1) {
         historyIndex++;
