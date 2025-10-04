@@ -125,3 +125,33 @@ export function getSoundNames(): string[] {
   const sounds = loadSounds();
   return Object.keys(sounds);
 }
+
+/**
+ * Play a sound with optional volume control and error handling
+ * @param soundName - Name of the sound group to play from
+ * @param volume - Volume level (0.0 to 1.0), defaults to 0.3
+ * @returns Promise that resolves when sound starts playing
+ */
+export async function playSound(soundName: string, volume: number = 0.3): Promise<void> {
+  const soundFile = getRandomSound(soundName);
+  
+  if (!soundFile) {
+    throw new Error(`Sound '${soundName}' not found`);
+  }
+
+  const audio = new Audio(soundFile);
+  audio.volume = volume;
+  await audio.play();
+}
+
+/**
+ * Play a specific sound file by path
+ * @param soundPath - Direct path to the sound file
+ * @param volume - Volume level (0.0 to 1.0), defaults to 0.3
+ * @returns Promise that resolves when sound starts playing
+ */
+export async function playSoundFile(soundPath: string, volume: number = 0.3): Promise<void> {
+  const audio = new Audio(soundPath);
+  audio.volume = volume;
+  await audio.play();
+}

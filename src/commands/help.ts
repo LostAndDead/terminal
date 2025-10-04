@@ -3,7 +3,7 @@ export const help = (): string => {
     Information: ["about"],
     System: ["help", "clear", "date", "exit", "echo"],
     Productivity: ["todo", "weather"],
-    Customization: ["theme", "banner", "colour"],
+    Customization: ["theme", "banner", "colour", "crt", "sound"],
     Network: ["curl", "hostname", "whoami"],
     Contact: ["email", "contact"],
     Fun: ["play", "neofetch", "colourdemo"],
@@ -18,7 +18,7 @@ export const help = (): string => {
   }
 
   output +=
-    'Type "[command] help" or "[command]" without args for more info.';
+    'Type "[command]" without args for more info.';
   output += "\nNot all commands are listed, some are hidden for you to discover!";
 
   return output;

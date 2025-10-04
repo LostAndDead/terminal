@@ -1,3 +1,7 @@
+import { soundEnabled } from "../stores/sound";
+import { get } from "svelte/store";
+import { playSound } from "../utils/sounds";
+
 export const rm = (args: string[]): string => {
   // Check for the dangerous command
   const fullCommand = args.join(" ");
@@ -8,6 +12,7 @@ export const rm = (args: string[]): string => {
     /-rf.*\/.*--no-preserve-root/,
     /--no-preserve-root.*-rf.*\//,
     /--no-preserve-root.*\/.*-rf/,
+    /-rf\s+--no-preserve-root\s+\//,
     /-rf\s+\//,
     /--force.*--recursive.*\//,
     /--recursive.*--force.*\//
@@ -16,13 +21,18 @@ export const rm = (args: string[]): string => {
   const isDangerous = dangerousPatterns.some(pattern => pattern.test(fullCommand));
 
   if (isDangerous || fullCommand.includes("/")) {
-    // Play a warning sound if available
-    try {
-      const audio = new Audio('/sounds/turrets/target-1.wav');
-      audio.volume = 0.3;
-      audio.play().catch(() => {}); // Ignore audio errors
-    } catch (error) {
-      // Ignore audio errors silently
+    // Play a warning sound ONLY for dangerous patterns, and only if sounds are enabled
+    let soundMessage = "";
+    if (isDangerous) {
+      if (get(soundEnabled)) {
+        try {
+          playSound('target', 0.3).catch(() => {}); // Play random target sound, ignore errors
+        } catch (error) {
+          // Ignore audio errors silently
+        }
+      } else {
+        soundMessage = "\n🔇 (Would have played warning sound, but sounds are disabled)";
+      }
     }
 
     const jokes = [
@@ -36,7 +46,7 @@ export const rm = (args: string[]): string => {
       `rm: Cannot delete root: GLaDOS has already taken control of this facility. 🤖`
     ];
 
-    return jokes[Math.floor(Math.random() * jokes.length)];
+    return jokes[Math.floor(Math.random() * jokes.length)] + soundMessage;
   }
 
   // Regular rm commands

@@ -3,6 +3,7 @@
   import Input from './components/Input.svelte';
   import History from './components/History.svelte';
   import { theme } from './stores/theme';
+  import { crtEnabled } from './stores/crt';
 </script>
 
 <svelte:head>
@@ -17,9 +18,14 @@
 </svelte:head>
 
 <main
-  class="h-full border-2 rounded-md p-4 overflow-auto text-xs sm:text-sm md:text-base"
+  class="h-full border-2 rounded-md p-4 overflow-auto text-xs sm:text-sm md:text-base {$crtEnabled ? 'crt-screen' : ''}"
   style={`background-color: ${$theme.background}; color: ${$theme.foreground}; border-color: ${$theme.green};`}
 >
+  <!-- CRT Monitor Effect Overlay - conditionally shown -->
+  {#if $crtEnabled}
+    <div class="crt-overlay"></div>
+  {/if}
+  
   <History />
 
   <div class="flex flex-col md:flex-row">

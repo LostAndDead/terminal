@@ -1,6 +1,13 @@
-import { getSoundNames, getRandomSound } from "../utils/sounds";
+import { getSoundNames, playSound } from "../utils/sounds";
+import { soundEnabled } from "../stores/sound";
+import { get } from "svelte/store";
 
 export const play = async (args: string[]): Promise<string> => {
+  // Check if sounds are enabled
+  if (!get(soundEnabled)) {
+    return "🔇 Sounds are currently disabled. Use 'sound on' to enable sounds.";
+  }
+
   // Load sounds dynamically
   const soundNames = getSoundNames();
   
@@ -18,21 +25,11 @@ Examples:
   }
 
   const soundName = args[0].toLowerCase();
-  const soundFile = getRandomSound(soundName);
-
-  if (!soundFile) {
-    return `Sound '${soundName}' not found. Try 'play' without arguments to see available sounds.`;
-  }
 
   try {
-    const audio = new Audio(soundFile);
-    audio.volume = 0.3; // Set volume to 30% to avoid being too loud
-    
-    // Try to play the audio file
-    await audio.play();
-    return `♪ Playing ${soundName}... (${soundFile})`;
-    
+    await playSound(soundName, 0.3);
+    return `♪ Playing ${soundName}...`;
   } catch (error) {
-    return `Error: Could not play '${soundName}'. Make sure ${soundFile} exists and is accessible.`;
+    return `Sound '${soundName}' not found. Try 'play' without arguments to see available sounds.`;
   }
 };
