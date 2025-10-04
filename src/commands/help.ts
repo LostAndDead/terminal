@@ -3,10 +3,10 @@ export const help = (): string => {
     Information: ["about"],
     System: ["help", "clear", "date", "exit", "echo"],
     Productivity: ["todo", "weather"],
-    Customization: ["theme", "banner"],
+    Customization: ["theme", "banner", "colour"],
     Network: ["curl", "hostname", "whoami"],
     Contact: ["email", "contact"],
-    Fun: ["play", "neofetch"],
+    Fun: ["play", "neofetch", "colourdemo"],
   };
 
   let output = "Available commands:\n\n";

@@ -25,6 +25,9 @@ import { banner } from './banner';
 import { todo } from './todo';
 import { play } from './play';
 import { neofetch } from './neofetch';
+import { teapot } from './teapot';
+import { colour } from './colour';
+import { colourdemo } from './colourdemo';
 
 // Complete command registry with all extracted commands
 export const commandRegistry: Record<string, CommandFunction> = {
@@ -54,6 +57,7 @@ export const commandRegistry: Record<string, CommandFunction> = {
   
   // Customization commands
   theme: themeCommand, // Note: renamed to avoid conflict with store
+  colour,
   
   // Productivity commands
   todo,
@@ -69,6 +73,8 @@ export const commandRegistry: Record<string, CommandFunction> = {
   // Fun commands
   beans,
   play,
+  teapot,
+  colourdemo,
   
   // Editor commands
   vi,
@@ -105,4 +111,6 @@ export {
   todo,
   play,
   neofetch,
+  colour,
+  colourdemo,
 };

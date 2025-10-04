@@ -2,6 +2,7 @@
   import { history } from '../stores/history';
   import { theme } from '../stores/theme';
   import Ps1 from './Ps1.svelte';
+  import { renderColouredOutput } from '../utils/colours';
 </script>
 
 {#each $history as { command, outputs }}
@@ -18,7 +19,11 @@
 
     {#each outputs as output}
       <p class="whitespace-pre ascii-art">
-        {output}
+        {#if typeof output === 'string'}
+          {output}
+        {:else}
+          {@html renderColouredOutput(output)}
+        {/if}
       </p>
     {/each}
   </div>

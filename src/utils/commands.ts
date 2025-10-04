@@ -1,9 +1,10 @@
 import { history } from "../stores/history";
 // Import commands from the new registry
 import { commandRegistry } from "../commands";
+import type { ColouredOutput } from "./colours";
 
 // All commands are now extracted to separate files and imported via the registry
-export const commands: Record<string, (args: string[]) => Promise<string> | string> = {
+export const commands: Record<string, (args: string[]) => Promise<string | ColouredOutput> | string | ColouredOutput> = {
   // Import all the extracted commands
   ...commandRegistry,
 
